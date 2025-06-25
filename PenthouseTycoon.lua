@@ -16,3 +16,25 @@ Toggle.TextColor3 = Color3.new(1, 1, 1)
 Toggle.BackgroundTransparency = 1
 
 local running = false
+
+local function autoCollect()
+  while running do
+    for _, v in pairs(game:GetDescendants()) do
+      if v:IsA("ProximityPrompt") and v.ActionText == "Collect"
+then
+          pcall(function()
+            fireproximityprompt(v)
+          end)
+      end
+    end
+    wait(1)
+  end
+end
+
+Toggle.MouseButton1Click:Connect(function()
+    running = not running
+    Toggle.Text = running and "Auto Collect: ON" or "Auto Collect: OFF"
+    if running then
+      autoCollect()
+    end
+end)
