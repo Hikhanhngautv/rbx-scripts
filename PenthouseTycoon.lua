@@ -1,25 +1,41 @@
 -- Tải Rayfield UI
 local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
--- Tạo cửa sổ UI chính
+-- Tạo cửa sổ giao diện
 local Window = Rayfield:CreateWindow({
 	Name = "🍌 Banana Cat Hub - Penthouse Tycoon",
 	LoadingTitle = "Banana Cat GUI",
 	LoadingSubtitle = "by Hikhanhngautv",
 	ConfigurationSaving = {
 		Enabled = true,
-		FolderName = "BananaCatHub", -- đổi tên nếu muốn
-		FileName = "PenthouseConfig"
+		FolderName = "BananaCatHub",
+		FileName = "PenthouseTycoon"
 	},
-        Discord = {
-           Enabled = false
-        },
-        KeySystem = false
+	KeySystem = false,
 })
 
--- Tạo Tab chính
-local MainTab = Window:CreateTab("🏠 Auto Farm", 4483362458) -- iconID Roblox
-local TeleportTab = Window:CreateTab("🚀 Teleport", 4483345998)
-local SettingTab = Window:CreateTab("⚙️ Settings", 4483345998)
+-- Tab Auto Farm
+local AutoFarm = Window:CreateTab("🏠 Auto Farm", 4483362458)
 
--- Bạn sẽ thêm các Section, Toggle, Button sau
+-- Thêm Toggle Auto Collect Cash
+local AutoCollect = false
+
+AutoFarm:CreateToggle({
+	Name = "💸 Auto Collect Cash",
+	CurrentValue = false,
+	Flag = "AutoCashCollect",
+	Callback = function(Value)
+		AutoCollect = Value
+		while AutoCollect do
+			task.wait(1)
+
+			for _, v in pairs(game:GetService("Workspace"):GetDescendants()) do
+				if v:IsA("TouchTransmitter") and v.Parent and v.Parent.Name == "Cash" then
+					firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0)
+					task.wait()
+					firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 1)
+				end
+			end
+		end
+	end,
+})
