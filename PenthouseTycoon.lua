@@ -17,9 +17,8 @@ local Window = Rayfield:CreateWindow({
 -- Tab Auto Farm
 local AutoFarm = Window:CreateTab("🏠 Auto Farm", 4483362458)
 
--- Biến kiểm soát Auto Collect
+-- Auto Collect Cash Toggle
 local AutoCollect = false
-local AutoCollectConnection
 
 AutoFarm:CreateToggle({
 	Name = "💸 Auto Collect Cash",
@@ -29,26 +28,22 @@ AutoFarm:CreateToggle({
 		AutoCollect = Value
 
 		if AutoCollect then
-			-- Tạo vòng lặp riêng không gây treo
-			AutoCollectConnection = task.spawn(function()
+			task.spawn(function()
 				while AutoCollect do
+					task.wait(1)
+
 					for _, v in pairs(workspace:GetDescendants()) do
-						if v:IsA("TouchTransmitter") and v.Parent and v.Parent.Name == "Cash" then
-							local hrp = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-							if hrp then
-								firetouchinterest(hrp, v.Parent, 0)
-								task.wait(0.05)
-								firetouchinterest(hrp, v.Parent, 1)
-							end
+						-- Tìm ProximityPrompt gắn với Mailbox
+						if v:IsA("ProximityPrompt") and v.Parent and tostring(v.Parent):lower():find("mailbox") then
+							fireproximityprompt(v)
+
+						-- Tìm ClickDetector gắn với Mailbox
+						elseif v:IsA("ClickDetector") and v.Parent and tostring(v.Parent):lower():find("mailbox") then
+							fireclickdetector(v)
 						end
 					end
-					task.wait(1)
 				end
 			end)
-		else
-			if AutoCollectConnection then
-				task.cancel(AutoCollectConnection)
-			end
 		end
 	end,
 })
