@@ -67,3 +67,22 @@ local function loadWithTimeout(url: string, timeout: number?): ...any
 	end
 	return if success then result else nil
 end
+
+local requestsDisabled = getgenv and getgenv().DISABLE_RAYFIELD_REQUESTS
+local InterfaceBuild = '3K3W'
+local Release = "Build 1.68"
+local RayfieldFolder = "Rayfield"
+local ConfigurationFolder = RayfieldFolder.."/Configurations"
+local ConfigurationExtension = ".rfld"
+local settingsTable = {
+	General = {
+		-- if needs be in order just make getSetting(name)
+		rayfieldOpen = {Type = 'bind', Value = 'K', Name = 'Rayfield Keybind'},
+		-- buildwarnings
+		-- rayfieldprompts
+
+	},
+	System = {
+		usageAnalytics = {Type = 'toggle', Value = true, Name = 'Anonymised Analytics'},
+	}
+}
